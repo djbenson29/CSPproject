@@ -14,7 +14,7 @@ public class fillBags {
 	
 	// Global Variables
 	int valueNumbers[], variableNumbers[], fittingNums[];
-	char valueLetters[], variableLetters[];
+	char valueLetters[], variableLetters[], unaryInc[], unaryEx[];
 	
 	// Constructor
 	public fillBags() {
@@ -37,26 +37,45 @@ public class fillBags {
 				i = 0;
 				continue;
 			}
-			// Variables
-			if(counter == 1){
+			
+			switch(counter){
+			case 1:
+				// Variables{
 				variableLetters[i] = line.charAt(0);
 				variableNumbers[i] = Integer.parseInt(line.substring(2, 100));
 				i++;
-			}
-			
-			// Values
-			else if (counter == 2){
+				
+			case 2: 
+				// Values
 				valueLetters[i] = line.charAt(0);
 				valueNumbers[i] = Integer.parseInt(line.substring(2, 100));
 				i++;
-			}
-			
-			// Fitting Values
-			else if(counter == 3){
+				
+			case 3:	
+				// Fitting Values
 				fittingNums[i] = Integer.parseInt(line.substring(2, 100));
 				i++;
-			}
-		}
+				
+			case 4:
+				// Unary Inclusive
+				unaryInc[i] = line.charAt(0);
+				unaryInc[i+1] = line.charAt(2);
+				i++;
+				
+			case 5: 
+				// Unary Exclusive
+				unaryEx[i] = line.charAt(0);
+				unaryEx[i+1] = line.charAt(2);
+				i++;
+				
+			case 6: 
+				// Binary Equals
+				
+				
+				// Binary Not Equals
+				
+				// Binary Simultaneous 
+			}	
 		
 	}
 	
