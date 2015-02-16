@@ -21,6 +21,9 @@ public class fillBags {
 	String variableLetters[] = new String[100];
 	String unaryInc[][] = new String[100][100];
 	String unaryEx[][] = new String[100][100];
+	String binaryEq[][] = new String[100][100];
+	String binaryNotEq[][] = new String[100][100];
+	String mutualEx[][] = new String[100][100];
 	
 	// Constructor
 	public fillBags() {
@@ -90,12 +93,85 @@ public class fillBags {
 				
 			case 6: 
 				// Binary Equals
-				
-				
+				while(j < ls.size()){
+					binaryEq[i][j] = ls.get(j);
+					j++;
+				}
+				i++;
+				j=0;
+				break;
+			
+			case 7:
 				// Binary Not Equals
+				while(j<ls.size()){
+					binaryNotEq[i][j] = ls.get(j);
+					j++;
+				}
+				i++;
+				j=0;
+				break;
 				
-			}	// Binary Simultaneous 
-		}	
+			case 8:
+				// Binary Mutual Exclusive 
+				while(j<(ls.size()/2)){
+					mutualEx[i][j] = ls.get(j);
+					j++;
+				}
+				i++;
+				j=0;
+				break;
+			}	
+		}
+		System.out.println("Values");
+		for (int k=0; k<valueLetters.length;k++){
+			System.out.println(valueLetters[i] + " " + valueNumbers[i] + "\n");
+		}
+		System.out.println("Variables");
+		for (int k=0; k<variableLetters.length;k++){
+			System.out.println(variableLetters[i] + " " + variableNumbers[i] + "\n");
+		}
+		System.out.println("Fitting Numbers");
+		for (int k=0; k<fittingNums.length;k++){
+			System.out.println(fittingNums[i] + " ");
+		}
+		System.out.println("Unary Inclusive");
+		for (int k=0; k<unaryInc.length;k++){
+			for (int p=0; p<unaryInc.length;p++){
+				System.out.println(unaryInc[k][p] + " ");
+			}
+			System.out.println("\n");
+		}
+		System.out.println("Unary Exclusive");
+		for (int k=0; k<unaryEx.length;k++){
+			for (int p=0; p<unaryEx.length;p++){
+				System.out.println(unaryEx[k][p] + " ");
+			}
+			System.out.println("\n");
+		}
+		System.out.println("Binary Equal");
+		for (int k=0; k<binaryEq.length;k++){
+			for (int p=0; p<binaryEq.length;p++){
+				System.out.println(binaryEq[k][p] + " ");
+			}
+			System.out.println("\n");
+		}
+		System.out.println("Binary Not Equal");
+		for (int k=0; k<binaryNotEq.length;k++){
+			for (int p=0;p<binaryNotEq.length;p++){
+				System.out.println(binaryNotEq[k][p] + " ");
+			}
+			System.out.println("\n");
+		}
+		System.out.println("Mutual Exclusive");
+		for (int k=0; k<mutualEx.length;k++){
+			for (int p=0;p<mutualEx.length;p++){
+				System.out.println(mutualEx[k][p] + " ");
+			}
+			System.out.println("\n");
+		}
+		
+		
+		
 	}
 	
 	
