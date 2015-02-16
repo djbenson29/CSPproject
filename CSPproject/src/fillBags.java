@@ -9,12 +9,13 @@
 
 
 import java.io.*;
+import java.util.*;
 
 public class fillBags {
 	
 	// Global Variables
 	int valueNumbers[], variableNumbers[], fittingNums[];
-	char valueLetters[], variableLetters[], unaryInc[], unaryEx[];
+	String valueLetters[], variableLetters[], unaryInc[], unaryEx[];
 	
 	// Constructor
 	public fillBags() {
@@ -38,35 +39,39 @@ public class fillBags {
 				continue;
 			}
 			
+			List <String> ls = Arrays.asList(line.split(" "));
+
 			switch(counter){
 			case 1:
-				// Variables{
-				variableLetters[i] = line.charAt(0);
-				variableNumbers[i] = Integer.parseInt(line.substring(2, 100));
+				// Variables
+				variableLetters[i] = ls.get(0);
+				variableNumbers[i] = Integer.parseInt(ls.get(1));
 				i++;
 				
 			case 2: 
 				// Values
-				valueLetters[i] = line.charAt(0);
-				valueNumbers[i] = Integer.parseInt(line.substring(2, 100));
+				valueLetters[i] = ls.get(0);
+				valueNumbers[i] = Integer.parseInt(ls.get(1));
 				i++;
 				
 			case 3:	
 				// Fitting Values
-				fittingNums[i] = Integer.parseInt(line.substring(2, 100));
+				fittingNums[i] = Integer.parseInt(ls.get(1));
 				i++;
 				
 			case 4:
 				// Unary Inclusive
-				unaryInc[i] = line.charAt(0);
-				unaryInc[i+1] = line.charAt(2);
-				i++;
+				while(i < ls.size()){
+					unaryInc[i] = ls.get(i);
+					i++;
+				}
 				
 			case 5: 
 				// Unary Exclusive
-				unaryEx[i] = line.charAt(0);
-				unaryEx[i+1] = line.charAt(2);
-				i++;
+				while(i < ls.size()){
+					unaryEx[i] = ls.get(i);
+					i++;
+				}
 				
 			case 6: 
 				// Binary Equals
@@ -74,9 +79,8 @@ public class fillBags {
 				
 				// Binary Not Equals
 				
-				// Binary Simultaneous 
-			}	
-		
+			}	// Binary Simultaneous 
+		}	
 	}
 	
 	
