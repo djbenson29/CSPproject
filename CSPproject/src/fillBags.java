@@ -14,8 +14,13 @@ import java.util.*;
 public class fillBags {
 	
 	// Global Variables
-	int valueNumbers[], variableNumbers[], fittingNums[];
-	String valueLetters[], variableLetters[], unaryInc[], unaryEx[];
+	int valueNumbers[] = new int[100];
+	int variableNumbers[] = new int[100];
+	int fittingNums[] = new int[100];
+	String valueLetters[] = new String[100];
+	String variableLetters[] = new String[100];
+	String unaryInc[][] = new String[100][100];
+	String unaryEx[][] = new String[100][100];
 	
 	// Constructor
 	public fillBags() {
@@ -28,7 +33,7 @@ public class fillBags {
 		// Open the fileReader and read stuff in
 		File inputFile = new File("./" + fileName);
 		BufferedReader br = new BufferedReader(new FileReader(inputFile));
-		int counter = 0, i = 0;
+		int counter = 0, i = 0, j = 0;
 		
 		
 		String line = null;
@@ -47,31 +52,41 @@ public class fillBags {
 				variableLetters[i] = ls.get(0);
 				variableNumbers[i] = Integer.parseInt(ls.get(1));
 				i++;
+				break;
 				
 			case 2: 
 				// Values
 				valueLetters[i] = ls.get(0);
 				valueNumbers[i] = Integer.parseInt(ls.get(1));
 				i++;
+				break;
 				
 			case 3:	
 				// Fitting Values
-				fittingNums[i] = Integer.parseInt(ls.get(1));
+				fittingNums[0] = Integer.parseInt(ls.get(0));
+				fittingNums[1] = Integer.parseInt(ls.get(1));
 				i++;
+				break;
 				
 			case 4:
 				// Unary Inclusive
-				while(i < ls.size()){
-					unaryInc[i] = ls.get(i);
-					i++;
+				while(j < ls.size()){
+					unaryInc[i][j] = ls.get(j);
+					j++;
 				}
+				i++;
+				j = 0;
+				break;
 				
 			case 5: 
 				// Unary Exclusive
-				while(i < ls.size()){
-					unaryEx[i] = ls.get(i);
-					i++;
+				while(j < ls.size()){
+					unaryEx[i][j] = ls.get(j);
+					j++;
 				}
+				i++;
+				j = 0;
+				break;
 				
 			case 6: 
 				// Binary Equals
