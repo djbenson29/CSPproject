@@ -218,7 +218,10 @@ public class fillBags {
 		br.close();
 	}
 
-
+	public void initBags(String[] bagNames, int[] weights){
+		
+		
+	}
 
 	public static void main(String [] arg) throws IOException {
 
