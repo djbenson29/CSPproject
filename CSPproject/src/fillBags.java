@@ -130,7 +130,7 @@ public class fillBags {
 				}	
 			}
 		}
-
+/*
 		System.out.println("Values");
 		for (int k=0; k<valueLetters.length;k++){
 			if (valueLetters[k] != null || valueNumbers[k] != 0){
@@ -216,7 +216,9 @@ public class fillBags {
 		}
 		
 		System.out.print("\n");
-
+*/
+		fillBags fb = new fillBags();
+		fb.initBags(valueLetters, valueNumbers);
 		br.close();
 	}
 
@@ -229,17 +231,27 @@ public class fillBags {
 				currentWeight = weights[i];
 				listOfBags[i] = new Bag(currentWeight, currentName); 
 			}
-			
+			else{
+				break;
+			}
+		}
+		for(int i=0;i<listOfBags.length;i++){
+			if(listOfBags[i] != null){
+				System.out.println(listOfBags[i].bagName + " " + listOfBags[i].weight);
+			}
+			else
+			{
+				break;
+			}
 		}
 		
 	}
 
-	public void main(String [] arg) throws IOException {
+	public static void main(String [] arg) throws IOException {
 
 		String fileName = arg[0];
 		fillBags fb =  new fillBags();
 		fb.readConstraints(fileName);
-		fb.initBags(valueLetters, valueNumbers);
 	}
 
 
