@@ -2,12 +2,13 @@
 public class Bag {
 	
 	int weight;
+	String bagName;
 	String[] listOfItems = new String[100];
 	int numItems;
 	
-	public Bag(int weight, String[] listOfItems){
+	public Bag(int weight, String bagName){
 		this.weight = weight;
-		this.listOfItems = listOfItems;
+		this.bagName = bagName;
 		this.numItems = 0;
 	}
 	

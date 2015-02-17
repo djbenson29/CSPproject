@@ -24,6 +24,9 @@ public class fillBags {
 	String binaryEq[][] = new String[100][100];
 	String binaryNotEq[][] = new String[100][100];
 	String mutualEx[][] = new String[100][100];
+	int lowerLimit = 0;
+	int higherLimit = 100;
+	Bag listOfBags[] = new Bag[100];
 
 	// Constructor
 	public fillBags() {
@@ -68,6 +71,8 @@ public class fillBags {
 					// Fitting Values
 					fittingNums[0] = Integer.parseInt(ls.get(0));
 					fittingNums[1] = Integer.parseInt(ls.get(1));
+					lowerLimit = fittingNums[0];
+					higherLimit = fittingNums[1];
 					i++;
 					break;
 
@@ -212,24 +217,29 @@ public class fillBags {
 		
 		System.out.print("\n");
 
-
-
-
 		br.close();
 	}
 
 	public void initBags(String[] bagNames, int[] weights){
-		
+		String currentName;
+		int currentWeight = 100;
+		for(int i=0;i<bagNames.length;i++){
+			if(bagNames[i] != null){
+				currentName = bagNames[i];
+				currentWeight = weights[i];
+				listOfBags[i] = new Bag(currentWeight, currentName); 
+			}
+			
+		}
 		
 	}
 
-	public static void main(String [] arg) throws IOException {
+	public void main(String [] arg) throws IOException {
 
 		String fileName = arg[0];
 		fillBags fb =  new fillBags();
 		fb.readConstraints(fileName);
-
-
+		fb.initBags(valueLetters, valueNumbers);
 	}
 
 
