@@ -32,23 +32,23 @@ public class fillBags {
 	
 	// Method to take in the constraints in the input file
 	void readConstraints(String fileName) throws FileNotFoundException, IOException{
-		
+		System.out.println("It is here!");
 		// Open the fileReader and read stuff in
 		File inputFile = new File("./" + fileName);
 		BufferedReader br = new BufferedReader(new FileReader(inputFile));
 		int counter = 0, i = 0, j = 0;
 		
 		
-		String line = null;
-		while((line = br.readLine()) != null){
+		for(String line; (line = br.readLine()) != null;){
+			//line = br.readLine();
 			if (line.contains("#")){
 				counter++;
 				i = 0;
-				continue;
+				//System.out.println("Incrementing counter! " + counter);
 			}
-			
+			else{
 			List <String> ls = Arrays.asList(line.split(" "));
-
+			//System.out.println(ls.get(0) + ls.get(1));
 			switch(counter){
 			case 1:
 				// Variables
@@ -120,58 +120,84 @@ public class fillBags {
 				i++;
 				j=0;
 				break;
+			default:
+				break;
 			}	
+			}
 		}
+		
 		System.out.println("Values");
 		for (int k=0; k<valueLetters.length;k++){
-			System.out.println(valueLetters[i] + " " + valueNumbers[i] + "\n");
+			if (valueLetters[k] != null || valueNumbers[k] != 0){
+			System.out.print(valueLetters[k] + " " + valueNumbers[k] + "\n");
+			}
 		}
 		System.out.println("Variables");
 		for (int k=0; k<variableLetters.length;k++){
-			System.out.println(variableLetters[i] + " " + variableNumbers[i] + "\n");
+			if (variableLetters[k] != null || variableNumbers[k] != 0){
+			System.out.print(variableLetters[k] + " " + variableNumbers[k] + "\n");
+			}
 		}
 		System.out.println("Fitting Numbers");
 		for (int k=0; k<fittingNums.length;k++){
-			System.out.println(fittingNums[i] + " ");
+			if (fittingNums[k] != 0){
+			System.out.println(fittingNums[k] + " ");
+			}
 		}
+		
 		System.out.println("Unary Inclusive");
 		for (int k=0; k<unaryInc.length;k++){
 			for (int p=0; p<unaryInc.length;p++){
-				System.out.println(unaryInc[k][p] + " ");
+				if (unaryInc[k][p] != null){
+				System.out.print(unaryInc[k][p] + " ");
+				}
 			}
-			System.out.println("\n");
+			//System.out.print("\n");
 		}
+		
 		System.out.println("Unary Exclusive");
 		for (int k=0; k<unaryEx.length;k++){
 			for (int p=0; p<unaryEx.length;p++){
-				System.out.println(unaryEx[k][p] + " ");
+				if (unaryEx[k][p] != null){
+				System.out.print(unaryEx[k][p] + " ");
+				}
 			}
-			System.out.println("\n");
+			//System.out.print("\n");
 		}
+		
 		System.out.println("Binary Equal");
 		for (int k=0; k<binaryEq.length;k++){
 			for (int p=0; p<binaryEq.length;p++){
-				System.out.println(binaryEq[k][p] + " ");
+				if (binaryEq[k][p] != null){
+				System.out.print(binaryEq[k][p] + " ");
+				}
 			}
-			System.out.println("\n");
+			//System.out.print("\n");
 		}
+		
 		System.out.println("Binary Not Equal");
 		for (int k=0; k<binaryNotEq.length;k++){
 			for (int p=0;p<binaryNotEq.length;p++){
-				System.out.println(binaryNotEq[k][p] + " ");
+				if (binaryNotEq[k][p] != null){
+				System.out.print(binaryNotEq[k][p] + " ");
+				}
 			}
-			System.out.println("\n");
+			//System.out.print("\n");
 		}
+		
 		System.out.println("Mutual Exclusive");
 		for (int k=0; k<mutualEx.length;k++){
 			for (int p=0;p<mutualEx.length;p++){
-				System.out.println(mutualEx[k][p] + " ");
+				if (mutualEx[k][p] != null){
+					System.out.print(mutualEx[k][p] + " ");
+				}
 			}
-			System.out.println("\n");
+			//System.out.print("\n");
 		}
 		
 		
 		
+		br.close();
 	}
 	
 	
