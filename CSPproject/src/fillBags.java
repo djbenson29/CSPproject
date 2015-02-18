@@ -277,14 +277,18 @@ public class fillBags {
 	public void distribute(Bag[] listOfBags, Item[] listOfItems){
 		for (int i=0;i<listOfItems.length;i++) {
 			for (int j=0;j<listOfBags.length;j++) {
-			//	if (listOfItems[i].weight != 0 && listOfBags[j].weight != 0){
+				if (listOfItems[i] != null && listOfBags[j] != null){
 					if (listOfItems[i].weight <= listOfBags[j].weight) {
-					//	listOfBags[j].addItem(listOfItems[i]);
-					//	break;
+						listOfBags[j].addItem(listOfItems[i]);
+						break;
+					}
 				}
-				//}
+				else {
+					break;
+				}
 			}
 		}
+		
 	}
 
 	public static void main(String [] arg) throws IOException {
