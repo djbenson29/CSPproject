@@ -373,27 +373,26 @@ public class fillBags {
 						//binary equal
 						else if (binaryEqual(listOfItems[i]) != null){
 							String binaryPair = binaryEqual(listOfItems[i]);
-							System.out.println(binaryPair);
 							boolean found = false;
+							//System.out.println(binaryPair);
 							for (int r=0;r<listOfBags.length;r++){
-								if (listOfBags[r] != null){
-									for(int s=0;s<listOfBags[r].listOfItems.length;s++){
-										if (listOfBags[r].listOfItems[s]!= null){
-											if (listOfBags[r].listOfItems[s].itemName.equals(binaryPair)){
-												if (listOfBags[r].listOfItems[s].weight <= 
-														(listOfBags[r].totalWeight-listOfBags[r].weight) &&
-														listOfBags[r].numItems < higherLimit){
-													listOfBags[r].addItem(listOfItems[s]);
-													listOfItems[i].weight = 100000;
-													found = true;
-												}
-											}
-											else{
-												
-											}
-										}
+								if (listOfBags[r] != null) {
+									if (Arrays.asList(listOfBags[r].listOfItems).contains(binaryPair)){
+										found = true;
+										break;
 									}
 								}
+							}
+							if (found){
+								if(Arrays.asList(listOfBags[j].listOfItems).contains(binaryPair))
+								{
+									listOfBags[j].addItem(listOfItems[i]);
+									listOfItems[i].weight = 100000;
+								}
+							}
+							else{
+								listOfBags[j].addItem(listOfItems[i]);
+								listOfItems[i].weight = 100000;
 							}
 						}
 						
