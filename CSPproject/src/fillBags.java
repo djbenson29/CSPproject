@@ -221,6 +221,7 @@ public class fillBags {
 		fillBags fb = new fillBags();
 		fb.initBags(valueLetters, valueNumbers);
 		fb.initItems(variableLetters, variableNumbers);
+		fb.distribute(listOfBags, listOfItems);
 		br.close();
 	}
 
@@ -269,6 +270,19 @@ public class fillBags {
 			else
 			{
 				break;
+			}
+		}
+	}
+	
+	public void distribute(Bag[] listOfBags, Item[] listOfItems){
+		for (int i=0;i<listOfItems.length;i++) {
+			for (int j=0;j<listOfBags.length;j++) {
+			//	if (listOfItems[i].weight != 0 && listOfBags[j].weight != 0){
+					if (listOfItems[i].weight <= listOfBags[j].weight) {
+					//	listOfBags[j].addItem(listOfItems[i]);
+					//	break;
+				}
+				//}
 			}
 		}
 	}

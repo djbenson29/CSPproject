@@ -3,7 +3,7 @@ public class Bag {
 	
 	int weight;
 	String bagName;
-	String[] listOfItems = new String[100];
+	Item[] listOfItems = new Item[100];
 	int numItems;
 	
 	public Bag(int weight, String bagName){
@@ -13,9 +13,9 @@ public class Bag {
 	}
 	
 	// Adds an item to the bag
-	public void addItem(String item, int itemWeight){
+	public void addItem(Item item){
 		this.listOfItems[this.numItems] = item;
-		this.weight += itemWeight;
+		this.weight -= item.weight;
 		this.numItems++;
 	}
 	
