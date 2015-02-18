@@ -27,6 +27,7 @@ public class fillBags {
 	int lowerLimit = 0;
 	int higherLimit = 100;
 	Bag listOfBags[] = new Bag[100];
+	Item listOfItems[] = new Item[100];
 
 	// Constructor
 	public fillBags() {
@@ -219,6 +220,7 @@ public class fillBags {
 */
 		fillBags fb = new fillBags();
 		fb.initBags(valueLetters, valueNumbers);
+		fb.initItems(variableLetters, variableNumbers);
 		br.close();
 	}
 
@@ -245,6 +247,30 @@ public class fillBags {
 			}
 		}
 		
+	}
+	
+	public void initItems(String[] itemNames, int[] weights){
+		String currentItemName;
+		int currentWeight = 100;
+		for(int i=0;i<itemNames.length;i++){
+			if (itemNames[i] != null) {
+				currentItemName = itemNames[i];
+				currentWeight = weights[i];
+				listOfItems[i] = new Item(currentWeight, currentItemName);
+			}
+			else{
+				break;
+			}
+		}
+		for(int i=0;i<listOfItems.length;i++){
+			if(listOfItems[i] != null){
+				System.out.println(listOfItems[i].itemName + " " + listOfItems[i].weight);
+			}
+			else
+			{
+				break;
+			}
+		}
 	}
 
 	public static void main(String [] arg) throws IOException {
