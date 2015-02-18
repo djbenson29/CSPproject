@@ -7,9 +7,8 @@ p 30
 q 15
 ##### - fitting limits
 ##### - unary inclusive
-D q
 ##### - unary exclusive
-C p
 ##### - binary equals
+C D
 ##### - binary not equals
 ##### - binary simultaneous

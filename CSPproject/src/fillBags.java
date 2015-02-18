@@ -371,6 +371,32 @@ public class fillBags {
 						}
 						//Check binary constraints
 						//binary equal
+						else if (binaryEqual(listOfItems[i]) != null){
+							String binaryPair = binaryEqual(listOfItems[i]);
+							System.out.println(binaryPair);
+							boolean found = false;
+							for (int r=0;r<listOfBags.length;r++){
+								if (listOfBags[r] != null){
+									for(int s=0;s<listOfBags[r].listOfItems.length;s++){
+										if (listOfBags[r].listOfItems[s]!= null){
+											if (listOfBags[r].listOfItems[s].itemName.equals(binaryPair)){
+												if (listOfBags[r].listOfItems[s].weight <= 
+														(listOfBags[r].totalWeight-listOfBags[r].weight) &&
+														listOfBags[r].numItems < higherLimit){
+													listOfBags[r].addItem(listOfItems[s]);
+													listOfItems[i].weight = 100000;
+													found = true;
+												}
+											}
+											else{
+												
+											}
+										}
+									}
+								}
+							}
+						}
+						
 						else{
 						listOfBags[j].addItem(listOfItems[i]);
 						listOfItems[i].weight = 100000;
@@ -385,7 +411,8 @@ public class fillBags {
 		int counter = 0;
 		for(int l=0;l<listOfItems.length;l++){
 			if (listOfItems[l] != null){
-				if (listOfItems[l].weight != 100000){
+				System.out.println(listOfItems[l].weight + " ");
+				if (listOfItems[l].weight < 10000){
 					counter++;
 				}
 			}
