@@ -218,7 +218,6 @@ public class fillBags {
 		
 		System.out.print("\n");
 */
-		fillBags fb = new fillBags();
 		initBagsAndItems(valueLetters, valueNumbers, variableLetters, variableNumbers);
 		br.close();
 	}
@@ -252,14 +251,89 @@ public class fillBags {
 		
 	}
 	
+	public String unaryInclusive(Item item)
+	{
+		for (int k=0;k<unaryInc.length;k++){
+			if (unaryInc[k][0] != null) {
+				if (unaryInc[k][0].equals(item.itemName)){
+						if (unaryInc[k][1] != null) {
+							return unaryInc[k][1];
+						}
+						else {
+							return null;
+						}
+				}
+			}
+			else {
+				break;
+			}
+		}
+		return null;
+	}
+	
+	public String[] unaryExclusive(Item item){
+		String[] excArrays = new String[100];
+		for (int k=0;k<unaryEx.length;k++){
+			if (unaryEx[k][0] != null){
+				if (unaryEx[k][0].equals(item.itemName)){
+					for (int j=1;j<unaryEx.length;j++){
+						if (unaryEx[k][j] != null){
+							for (int p=0;p<excArrays.length;p++){
+								if (excArrays[p] == null){
+									excArrays[p] = unaryEx[k][j];
+									break;
+								}
+							}
+						}
+						else{
+							break;
+						}
+					}	
+				}
+			}
+			else{
+				break;
+			}
+		}
+		return excArrays;
+	}
+	
+	
+	
 	public void distribute(Bag[] listOfBags, Item[] listOfItems){
 		for (int i=0;i<listOfItems.length;i++) {
 			for (int j=0;j<listOfBags.length;j++) {
 				if (listOfItems[i] != null && listOfBags[j] != null){
-					//System.out.println(listOfBags[i].bagName + " " + listOfBags[i].totalWeight);
-					if (listOfItems[i].weight <= (listOfBags[j].totalWeight-listOfBags[j].weight)) {
+					if (listOfItems[i].weight <= (listOfBags[j].totalWeight-listOfBags[j].weight) 
+							&& listOfBags[j].numItems < higherLimit) {
+						//Check unary constraints
+						if (unaryInclusive(listOfItems[i]) != null)
+						{
+							if (listOfBags[j].bagName.equals(unaryInclusive(listOfItems[i])))
+							{
+								listOfBags[j].addItem(listOfItems[i]);
+								listOfItems[i].weight = 100000;
+							}
+						}
+						else if (unaryExclusive(listOfItems[i])[0] != null){
+							String[] excArrays = new String[unaryExclusive(listOfItems[i]).length];
+							excArrays = unaryExclusive(listOfItems[i]);
+							for (int k=0;k<excArrays.length;k++){
+								if (excArrays[k] != null){
+									if (listOfBags[j].bagName.equals(excArrays[k])){
+
+									}
+									else{
+										listOfBags[j].addItem(listOfItems[i]);
+										listOfItems[i].weight = 100000;
+									}
+								}
+							}
+						}
+						else{
 						listOfBags[j].addItem(listOfItems[i]);
-						break;
+						listOfItems[i].weight = 100000;
+						}
 					}
 				}
 				else {
@@ -267,18 +341,35 @@ public class fillBags {
 				}
 			}
 		}
+		int counter = 0;
+		for(int l=0;l<listOfItems.length;l++){
+			if (listOfItems[l] != null){
+				if (listOfItems[l].weight != 100000){
+					counter++;
+				}
+			}
+		}
+		if (counter==0){
+			output(listOfBags, listOfItems);
+		}
+		else{
+			System.out.println("NO SOLUTION!");
+		}
+	}
+	
+	public void output(Bag[] listOfBags, Item[] listOfItems) {
 		for (int i=0;i<listOfBags.length;i++){
 			if (listOfBags[i] != null){
 				System.out.print(listOfBags[i].bagName + " ");
 				for (int j=0;j<listOfBags[i].listOfItems.length;j++){
 					if(listOfBags[i].listOfItems[j] != null){
-						System.out.println(listOfBags[i].listOfItems[j].itemName + " ");
+						System.out.print(listOfBags[i].listOfItems[j].itemName + " ");
 					}
 					else{
 						break;
 					}
 				}
-				System.out.println("number of items: " + listOfBags[i].numItems);
+				System.out.println("\nnumber of items: " + listOfBags[i].numItems);
 				System.out.println("total weight: " + listOfBags[i].weight + "/" + listOfBags[i].totalWeight);
 				System.out.println("wasted capacity: " + (listOfBags[i].totalWeight - listOfBags[i].weight));
 				System.out.println(" ");
