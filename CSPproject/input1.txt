@@ -1,0 +1,15 @@
+##### - variables
+C 14
+D 14
+E 14
+##### - values
+p 30
+q 15
+##### - fitting limits
+##### - unary inclusive
+D q
+##### - unary exclusive
+C p
+##### - binary equals
+##### - binary not equals
+##### - binary simultaneous

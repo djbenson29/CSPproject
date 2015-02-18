@@ -298,6 +298,43 @@ public class fillBags {
 		return excArrays;
 	}
 	
+	public String binaryEqual(Item item){
+		for (int i=0;i<binaryEq.length;i++){
+			if (binaryEq[i][0] != null){
+				if (binaryEq[i][0].equals(item.itemName)){
+					if (binaryEq[i][1] != null){
+						return binaryEq[i][1];
+					}
+					else{
+						return null;
+					}
+				}
+			}
+			else{
+				return null;
+			}
+		}
+		return null;
+	}
+	
+	public String binaryNotEqual(Item item){
+		for (int i=0;i<binaryNotEq.length;i++){
+			if (binaryNotEq[i][0] != null){
+				if (binaryNotEq[i][0].equals(item.itemName)){
+					if(binaryNotEq[i][1] != null){
+						return binaryNotEq[i][1];
+					}
+					else{
+						return null;
+					}
+				}
+			}
+			else{
+				return null;
+			}
+		}
+		return null; 
+	}
 	
 	
 	public void distribute(Bag[] listOfBags, Item[] listOfItems){
@@ -307,6 +344,7 @@ public class fillBags {
 					if (listOfItems[i].weight <= (listOfBags[j].totalWeight-listOfBags[j].weight) 
 							&& listOfBags[j].numItems < higherLimit) {
 						//Check unary constraints
+						//Unary inclusive
 						if (unaryInclusive(listOfItems[i]) != null)
 						{
 							if (listOfBags[j].bagName.equals(unaryInclusive(listOfItems[i])))
@@ -315,6 +353,7 @@ public class fillBags {
 								listOfItems[i].weight = 100000;
 							}
 						}
+						//Unary exclusive
 						else if (unaryExclusive(listOfItems[i])[0] != null){
 							String[] excArrays = new String[unaryExclusive(listOfItems[i]).length];
 							excArrays = unaryExclusive(listOfItems[i]);
@@ -330,6 +369,8 @@ public class fillBags {
 								}
 							}
 						}
+						//Check binary constraints
+						//binary equal
 						else{
 						listOfBags[j].addItem(listOfItems[i]);
 						listOfItems[i].weight = 100000;
