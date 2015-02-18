@@ -219,13 +219,11 @@ public class fillBags {
 		System.out.print("\n");
 */
 		fillBags fb = new fillBags();
-		fb.initBags(valueLetters, valueNumbers);
-		fb.initItems(variableLetters, variableNumbers);
-		fb.distribute(listOfBags, listOfItems);
+		initBagsAndItems(valueLetters, valueNumbers, variableLetters, variableNumbers);
 		br.close();
 	}
 
-	public void initBags(String[] bagNames, int[] weights){
+	public void initBagsAndItems(String[] bagNames, int[] weights, String[] itemNames, int[] itemWeights){
 		String currentName;
 		int currentWeight = 100;
 		for(int i=0;i<bagNames.length;i++){
@@ -238,47 +236,28 @@ public class fillBags {
 				break;
 			}
 		}
-		for(int i=0;i<listOfBags.length;i++){
-			if(listOfBags[i] != null){
-				System.out.println(listOfBags[i].bagName + " " + listOfBags[i].weight);
-			}
-			else
-			{
-				break;
-			}
-		}
-		
-	}
-	
-	public void initItems(String[] itemNames, int[] weights){
 		String currentItemName;
-		int currentWeight = 100;
+		int currentItemWeight = 100;
 		for(int i=0;i<itemNames.length;i++){
 			if (itemNames[i] != null) {
 				currentItemName = itemNames[i];
-				currentWeight = weights[i];
-				listOfItems[i] = new Item(currentWeight, currentItemName);
+				currentItemWeight = itemWeights[i];
+				listOfItems[i] = new Item(currentItemWeight, currentItemName);
 			}
 			else{
 				break;
 			}
 		}
-		for(int i=0;i<listOfItems.length;i++){
-			if(listOfItems[i] != null){
-				System.out.println(listOfItems[i].itemName + " " + listOfItems[i].weight);
-			}
-			else
-			{
-				break;
-			}
-		}
+		distribute(listOfBags, listOfItems);
+		
 	}
 	
 	public void distribute(Bag[] listOfBags, Item[] listOfItems){
 		for (int i=0;i<listOfItems.length;i++) {
 			for (int j=0;j<listOfBags.length;j++) {
 				if (listOfItems[i] != null && listOfBags[j] != null){
-					if (listOfItems[i].weight <= listOfBags[j].weight) {
+					//System.out.println(listOfBags[i].bagName + " " + listOfBags[i].totalWeight);
+					if (listOfItems[i].weight <= (listOfBags[j].totalWeight-listOfBags[j].weight)) {
 						listOfBags[j].addItem(listOfItems[i]);
 						break;
 					}
@@ -288,7 +267,23 @@ public class fillBags {
 				}
 			}
 		}
-		
+		for (int i=0;i<listOfBags.length;i++){
+			if (listOfBags[i] != null){
+				System.out.print(listOfBags[i].bagName + " ");
+				for (int j=0;j<listOfBags[i].listOfItems.length;j++){
+					if(listOfBags[i].listOfItems[j] != null){
+						System.out.println(listOfBags[i].listOfItems[j].itemName + " ");
+					}
+					else{
+						break;
+					}
+				}
+				System.out.println("number of items: " + listOfBags[i].numItems);
+				System.out.println("total weight: " + listOfBags[i].weight + "/" + listOfBags[i].totalWeight);
+				System.out.println("wasted capacity: " + (listOfBags[i].totalWeight - listOfBags[i].weight));
+				System.out.println(" ");
+			}
+		}
 	}
 
 	public static void main(String [] arg) throws IOException {
