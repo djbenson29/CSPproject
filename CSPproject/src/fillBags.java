@@ -36,7 +36,6 @@ public class fillBags {
 
 	// Method to take in the constraints in the input file
 	void readConstraints(String fileName) throws FileNotFoundException, IOException{
-		System.out.println("It is here!");
 		// Open the fileReader and read stuff in
 		File inputFile = new File("./" + fileName);
 		BufferedReader br = new BufferedReader(new FileReader(inputFile));
@@ -131,93 +130,6 @@ public class fillBags {
 				}	
 			}
 		}
-/*
-		System.out.println("Values");
-		for (int k=0; k<valueLetters.length;k++){
-			if (valueLetters[k] != null || valueNumbers[k] != 0){
-				System.out.print(valueLetters[k] + " " + valueNumbers[k] + "\n");
-			}
-		}
-		System.out.println("Variables");
-		for (int k=0; k<variableLetters.length;k++){
-			if (variableLetters[k] != null || variableNumbers[k] != 0){
-				System.out.print(variableLetters[k] + " " + variableNumbers[k] + "\n");
-			}
-		}
-		
-		System.out.println("Fitting Numbers");
-		for (int k=0; k<fittingNums.length;k++){
-			if (fittingNums[k] != 0){
-				System.out.println(fittingNums[k] + " ");
-			}
-		}
-		
-		System.out.print("\n");
-
-
-		System.out.println("Unary Inclusive");
-		for (int k=0; k<unaryInc.length;k++){
-			for (int p=0; p<unaryInc.length;p++){
-				if (unaryInc[k][p] != null){
-					System.out.print(unaryInc[k][p] + " ");
-				}
-			}
-			//System.out.print("\n");
-		}
-		
-		System.out.print("\n");
-
-
-		System.out.println("Unary Exclusive");
-		for (int k=0; k<unaryEx.length;k++){
-			for (int p=0; p<unaryEx.length;p++){
-				if (unaryEx[k][p] != null){
-					System.out.print(unaryEx[k][p] + " ");
-				}
-			}
-			//System.out.print("\n");
-		}
-		
-		System.out.print("\n");
-
-
-		System.out.println("Binary Equal");
-		for (int k=0; k<binaryEq.length;k++){
-			for (int p=0; p<binaryEq.length;p++){
-				if (binaryEq[k][p] != null){
-					System.out.print(binaryEq[k][p] + " ");
-				}
-			}
-			//System.out.print("\n");
-		}
-		
-		System.out.print("\n");
-
-
-		System.out.println("Binary Not Equal");
-		for (int k=0; k<binaryNotEq.length;k++){
-			for (int p=0;p<binaryNotEq.length;p++){
-				if (binaryNotEq[k][p] != null){
-					System.out.print(binaryNotEq[k][p] + " ");
-				}
-			}
-			//System.out.print("\n");
-		}
-		
-		System.out.print("\n");
-
-		System.out.println("Mutual Exclusive");
-		for (int k=0; k<mutualEx.length;k++){
-			for (int p=0;p<mutualEx.length;p++){
-				if (mutualEx[k][p] != null){
-					System.out.print(mutualEx[k][p] + " ");
-				}
-			}
-			//System.out.print("\n");
-		}
-		
-		System.out.print("\n");
-*/
 		initBagsAndItems(valueLetters, valueNumbers, variableLetters, variableNumbers);
 		br.close();
 	}
@@ -374,20 +286,30 @@ public class fillBags {
 						else if (binaryEqual(listOfItems[i]) != null){
 							String binaryPair = binaryEqual(listOfItems[i]);
 							boolean found = false;
-							//System.out.println(binaryPair);
 							for (int r=0;r<listOfBags.length;r++){
 								if (listOfBags[r] != null) {
-									if (Arrays.asList(listOfBags[r].listOfItems).contains(binaryPair)){
-										found = true;
-										break;
+									for (int p=0;p<listOfBags[r].listOfItems.length;p++){
+										if (listOfBags[r].listOfItems[p] != null){
+											found = listOfBags[r].listOfItems[p].itemName.equals(binaryPair);
+											if (found){break;}
+										}
 									}
 								}
 							}
 							if (found){
-								if(Arrays.asList(listOfBags[j].listOfItems).contains(binaryPair))
-								{
-									listOfBags[j].addItem(listOfItems[i]);
-									listOfItems[i].weight = 100000;
+								for (int b=0;b<listOfBags.length;b++){
+									if (listOfBags[b] != null){
+										for (int c=0;c<listOfBags[b].listOfItems.length;c++){
+											if (listOfBags[b].listOfItems[c] != null){
+												if(listOfBags[b].listOfItems[c].itemName.equals(binaryPair))
+												{
+													listOfBags[j].addItem(listOfItems[i]);
+													listOfItems[i].weight = 100000;
+													break;
+												}
+											}
+										}
+									}
 								}
 							}
 							else{
@@ -418,7 +340,6 @@ public class fillBags {
 											if (listOfBags[b].listOfItems[c] != null){
 												if (listOfBags[b].weight >= listOfBags[b].listOfItems[c].weight){
 													if(listOfBags[b].listOfItems[c].itemName.equals(notBinaryPair)){
-														//System.out.println("I'm here!");
 													}
 													else{
 														listOfBags[b].addItem(listOfItems[i]);
@@ -459,7 +380,6 @@ public class fillBags {
 		int counter = 0;
 		for(int l=0;l<listOfItems.length;l++){
 			if (listOfItems[l] != null){
-				System.out.println(listOfItems[l].weight + " ");
 				if (listOfItems[l].weight < 10000){
 					counter++;
 				}

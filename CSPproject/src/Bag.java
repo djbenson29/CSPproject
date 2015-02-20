@@ -19,7 +19,5 @@ public class Bag {
 		this.weight += item.weight;
 		this.numItems++;
 	}
-	
-	
 }
 
