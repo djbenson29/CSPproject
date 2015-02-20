@@ -3,7 +3,8 @@
  * Rafael Angelo rlangelo@wpi.edu
  * CS 4341 Project 4: CSP's
  * This class contains the main function. We take in an input file and create a log file while we attempt to solve
- * the Constraints Satisfaction Problem. After our program reaches conclusion we create an output file with our solutions.
+ * the Constraints Satisfaction Problem. After our program reaches conclusion it either displays the output at the 
+ * standard output, or it displays no solution if none exists.
  * 
  */
 
@@ -44,32 +45,32 @@ public class fillBags {
 		BufferedReader br = new BufferedReader(new FileReader(inputFile));
 		int counter = 0, i = 0, j = 0;
 
-
+		// If a line has a pound in it, it means we reached the next section
 		for(String line; (line = br.readLine()) != null;){
-			//line = br.readLine();
 			if (line.contains("#")){
 				counter++;
 				i = 0;
 			}
 			else{
+				//Split the line by blank spaces
 				List <String> ls = Arrays.asList(line.split(" "));
 				switch(counter){
 				case 1:
-					// Variables
+					// Add the variables names and weights to their respective arrays
 					variableLetters[i] = ls.get(0);
 					variableNumbers[i] = Integer.parseInt(ls.get(1));
 					i++;
 					break;
 
 				case 2: 
-					// Values
+					// Add the values names and weights to their respective array
 					valueLetters[i] = ls.get(0);
 					valueNumbers[i] = Integer.parseInt(ls.get(1));
 					i++;
 					break;
 
 				case 3:	
-					// Fitting Values
+					// Make the lower fitting value item 1 in array and higher item 2.
 					fittingNums[0] = Integer.parseInt(ls.get(0));
 					fittingNums[1] = Integer.parseInt(ls.get(1));
 					lowerLimit = fittingNums[0];
@@ -78,7 +79,7 @@ public class fillBags {
 					break;
 
 				case 4:
-					// Unary Inclusive
+					// Add all, if any, of the unary inclusives in its 2-dimensional array
 					while(j < ls.size()){
 						unaryInc[i][j] = ls.get(j);
 						j++;
@@ -88,7 +89,7 @@ public class fillBags {
 					break;
 
 				case 5: 
-					// Unary Exclusive
+					// Add all, if any, of the unary exclusives in their 2-dimensional array
 					while(j < ls.size()){
 						unaryEx[i][j] = ls.get(j);
 						j++;
@@ -98,7 +99,7 @@ public class fillBags {
 					break;
 
 				case 6: 
-					// Binary Equals
+					// Add all, if any, of the binary equals in their 2-dimensional array
 					while(j < ls.size()){
 						binaryEq[i][j] = ls.get(j);
 						j++;
@@ -108,7 +109,7 @@ public class fillBags {
 					break;
 
 				case 7:
-					// Binary Not Equals
+					// Add all, if any, of the binary not equals in their 2-dimensional array
 					while(j<ls.size()){
 						binaryNotEq[i][j] = ls.get(j);
 						j++;
@@ -118,7 +119,7 @@ public class fillBags {
 					break;
 
 				case 8:
-					// Binary Mutual Exclusive 
+					// Add all, if any, of the mutual exclusive in their 2-dimensional array
 					while(j<(ls.size()/2)){
 						mutualEx[i][j] = ls.get(j);
 						j++;
@@ -131,13 +132,16 @@ public class fillBags {
 				}	
 			}
 		}
+		//Close the stream and send the value and variables name and weights to be instantiated
 		initBagsAndItems(valueLetters, valueNumbers, variableLetters, variableNumbers);
 		br.close();
 	}
 
+	//Instantiates items and bags based on the existing arrays.
 	public void initBagsAndItems(String[] bagNames, int[] weights, String[] itemNames, int[] itemWeights) throws IOException{
 		String currentName;
 		int currentWeight = 100;
+		//Each new bag is put in a global array of Bags
 		for(int i=0;i<bagNames.length;i++){
 			if(bagNames[i] != null){
 				currentName = bagNames[i];
@@ -150,6 +154,7 @@ public class fillBags {
 		}
 		String currentItemName;
 		int currentItemWeight = 100;
+		//Each new item is put in a global array of Items
 		for(int i=0;i<itemNames.length;i++){
 			if (itemNames[i] != null) {
 				currentItemName = itemNames[i];
@@ -160,10 +165,13 @@ public class fillBags {
 				break;
 			}
 		}
+		//Call the method to solve the CSP problem.
 		distribute(listOfBags, listOfItems, 1);
 		
 	}
 	
+	//Method takes an item and returns a string. Checks to see if that item has 
+	//an unary inclusive constraint. If so, returns the bag name it has to be in.
 	public String unaryInclusive(Item item)
 	{
 		for (int k=0;k<unaryInc.length;k++){
@@ -184,6 +192,8 @@ public class fillBags {
 		return null;
 	}
 	
+	//Method takes an item and returns an array of strings. Checks to see if that item has 
+	//an unary exclusive constraint. If so, returns the bag names for all of the bags it cannot be in.
 	public String[] unaryExclusive(Item item){
 		String[] excArrays = new String[100];
 		for (int k=0;k<unaryEx.length;k++){
@@ -211,6 +221,8 @@ public class fillBags {
 		return excArrays;
 	}
 	
+	//Method takes an item and returns a string. Checks to see if that item has 
+	//an binary equal constraint. If so, returns the item name with which it has to be together.
 	public String binaryEqual(Item item){
 		for (int i=0;i<binaryEq.length;i++){
 			if (binaryEq[i][0] != null){
@@ -230,6 +242,8 @@ public class fillBags {
 		return null;
 	}
 	
+	//Method takes an item and returns a string. Checks to see if that item has 
+	//an binary not equal constraint. If so, returns the item name with which it cannot be together.
 	public String binaryNotEqual(Item item){
 		for (int i=0;i<binaryNotEq.length;i++){
 			if (binaryNotEq[i][0] != null){
@@ -249,15 +263,14 @@ public class fillBags {
 		return null; 
 	}
 	
+	//Method takes an item and returns a string. Checks to see if that item has a mutual 
+	// exclusive constraint. If so, returns the item name whose conditional constrain is related to.
 	public String mutualExclusive(Item item){
 		for (int i=0;i<mutualEx.length;i++){
 			if (mutualEx[i][0] != null && mutualEx[i+1][0] != null){
 				if (mutualEx[i][0].equals(item.itemName)){
 					if (mutualEx[i][1] != null){
 						return mutualEx[i+1][0];
-					}
-					else{
-						return null;
 					}
 				}
 				else{
@@ -271,6 +284,9 @@ public class fillBags {
 		return null;
 	}
 	
+	//Every time we want to backtrack we need to reset the bags to their initial condition.
+	//This method resets all of the bags variables to the initial value. It also resets all of the items
+	//original weights.
 	public void resetBags() throws IOException
 	{
 		for (int i=0;i<listOfBags.length;i++)
@@ -288,21 +304,21 @@ public class fillBags {
 		}
 	}
 	
+	//Method takes in the array of Bags, array of Items and a loop counter.
+	//This method actually solves the Constraint Satisfaction Problem.
 	public void distribute(Bag[] listOfBags, Item[] listOfItems, int loop) throws IOException{
 		for (int j=0;j<listOfBags.length;j++) {
 			for (int i=0;i<listOfItems.length;i++) {
 				if (listOfItems[i] != null && listOfBags[j] != null){
+					//Initially checks to see if the weight of the item is currently less than the weight of the Bag
 					if (listOfItems[i].weight <= (listOfBags[j].totalWeight-listOfBags[j].weight) 
 							&& listOfBags[j].numItems < higherLimit) {
 						//Check unary constraints
 						//Unary inclusive
-						System.out.println(listOfItems[i].itemName + " fits in bag " + listOfBags[j].bagName);
 						if (unaryInclusive(listOfItems[i]) != null)
 						{
-							//System.out.println(listOfItems[i].itemName + " has unary inclusive!");
 							if (listOfBags[j].bagName.equals(unaryInclusive(listOfItems[i])))
 							{
-								System.out.println("is it here?");
 								listOfBags[j].addItem(listOfItems[i]);
 								listOfItems[i].weight = 100000;
 							}
@@ -362,6 +378,7 @@ public class fillBags {
 							}
 						}
 						
+						//binary not equal
 						else if (binaryNotEqual(listOfItems[i]) != null){
 							String notBinaryPair = binaryNotEqual(listOfItems[i]);
 							boolean found = false;
@@ -405,14 +422,13 @@ public class fillBags {
 								}
 							}
 							else{
-								System.out.println("Does it come here?");
+								//This is called in case there are no constraints
 								listOfBags[j].addItem(listOfItems[i]);
 								listOfItems[i].weight = 100000;
 							}
 						}
 						
 						else{
-						System.out.println("DOes it come here?");
 						listOfBags[j].addItem(listOfItems[i]);
 						listOfItems[i].weight = 100000;
 						}
@@ -423,6 +439,9 @@ public class fillBags {
 				}
 			}
 		}
+		//After each item is added to a Bag, its weight is set to 100000
+		//This checks to see if any items have weights that are less than 100000
+		//If yes, it means item is not in a bag and it found no solution.
 		int counter = 0;
 		for(int l=0;l<listOfItems.length;l++){
 			if (listOfItems[l] != null){
@@ -433,6 +452,8 @@ public class fillBags {
 				}
 			}
 		}
+		//If counter is not equal to 0, that means there are items out of Bags.
+		//Reset everything. Shift arrays. Recall distribute.
 		if (counter != 0){
 			if (MAX_LOOPS == 0){
 				System.out.println("IS IT HERE?");
@@ -443,12 +464,16 @@ public class fillBags {
 			}
 			System.out.println("NO SOLUTION!");
 		}
+		//If all variables are in counters. Call the output method to display the output.
 		else{
+			
 			output(listOfBags, listOfItems);
 		}
 		
 	}
 	
+	//This is to help in our backtracking. We take the current array of items and shift all of the items to the left
+	//making the first item the last one, the second the first, etc.
 	public Item[] shiftArray(Item[] listOfItems){
 		Item[] temp = new Item[100];
 		Item firstItem = listOfItems[0];
@@ -470,6 +495,7 @@ public class fillBags {
 		return temp;
 	}
 	
+	//Method takes in the final list of Bags and sets them up for the correct output format.
 	public void output(Bag[] listOfBags, Item[] listOfItems) {
 		for (int i=0;i<listOfBags.length;i++){
 			if (listOfBags[i] != null){
@@ -490,6 +516,8 @@ public class fillBags {
 		}
 	}
 
+	//Initializes the program. Starts by instantiating this class and calls the 
+	//method to read the input file.
 	public static void main(String [] arg) throws IOException {
 
 		String fileName = arg[0];
