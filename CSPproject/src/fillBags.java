@@ -338,8 +338,8 @@ public class fillBags {
 	
 	
 	public void distribute(Bag[] listOfBags, Item[] listOfItems){
-		for (int i=0;i<listOfItems.length;i++) {
-			for (int j=0;j<listOfBags.length;j++) {
+		for (int j=0;j<listOfBags.length;j++) {
+			for (int i=0;i<listOfItems.length;i++) {
 				if (listOfItems[i] != null && listOfBags[j] != null){
 					if (listOfItems[i].weight <= (listOfBags[j].totalWeight-listOfBags[j].weight) 
 							&& listOfBags[j].numItems < higherLimit) {
@@ -398,24 +398,45 @@ public class fillBags {
 						
 						else if (binaryNotEqual(listOfItems[i]) != null){
 							String notBinaryPair = binaryNotEqual(listOfItems[i]);
-							System.out.println(notBinaryPair);
 							boolean found = false;
 							for (int r=0;r<listOfBags.length;r++){
 								if (listOfBags[r] != null){
-									if (Arrays.asList(listOfBags[r].listOfItems).contains(notBinaryPair)){
-										System.out.println("Found pair");
-										found = true;
-										break;
+									for (int p=0;p<listOfBags[r].listOfItems.length;p++){
+										if (listOfBags[r].listOfItems[p] != null){
+											found = listOfBags[r].listOfItems[p].itemName.equals(notBinaryPair);
+											if (found){ break;
+											}
+											
+										}
 									}
 								}
 							}
 							if (found){
-								if(Arrays.asList(listOfBags[j].listOfItems).contains(notBinaryPair)){
-									System.out.println("I'm here!");
-								}
-								else{
-									listOfBags[j].addItem(listOfItems[i]);
-									listOfItems[i].weight = 100000;
+								for (int b=0;b<listOfBags.length;b++){
+									if (listOfBags[b] != null){
+										for (int c=0;c<listOfBags[b].listOfItems.length;c++){
+											if (listOfBags[b].listOfItems[c] != null){
+												if (listOfBags[b].weight >= listOfBags[b].listOfItems[c].weight){
+													if(listOfBags[b].listOfItems[c].itemName.equals(notBinaryPair)){
+														//System.out.println("I'm here!");
+													}
+													else{
+														listOfBags[b].addItem(listOfItems[i]);
+														listOfItems[i].weight = 100000;
+														break;
+
+													}
+												}
+												else{
+													if (listOfBags[b+1] != null){
+														listOfBags[b+1].addItem(listOfItems[i]);
+														listOfItems[i].weight = 100000;
+														break;
+													}
+												}
+											}
+										}
+									}
 								}
 							}
 							else{
