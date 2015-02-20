@@ -28,6 +28,8 @@ public class fillBags {
 	int higherLimit = 100;
 	Bag listOfBags[] = new Bag[100];
 	Item listOfItems[] = new Item[100];
+	int MAX_LOOPS = 50;
+	String filename;
 
 	// Constructor
 	public fillBags() {
@@ -37,6 +39,7 @@ public class fillBags {
 	// Method to take in the constraints in the input file
 	void readConstraints(String fileName) throws FileNotFoundException, IOException{
 		// Open the fileReader and read stuff in
+		filename = fileName;
 		File inputFile = new File("./" + fileName);
 		BufferedReader br = new BufferedReader(new FileReader(inputFile));
 		int counter = 0, i = 0, j = 0;
@@ -47,11 +50,9 @@ public class fillBags {
 			if (line.contains("#")){
 				counter++;
 				i = 0;
-				//System.out.println("Incrementing counter! " + counter);
 			}
 			else{
 				List <String> ls = Arrays.asList(line.split(" "));
-				//System.out.println(ls.get(0) + ls.get(1));
 				switch(counter){
 				case 1:
 					// Variables
@@ -134,7 +135,7 @@ public class fillBags {
 		br.close();
 	}
 
-	public void initBagsAndItems(String[] bagNames, int[] weights, String[] itemNames, int[] itemWeights){
+	public void initBagsAndItems(String[] bagNames, int[] weights, String[] itemNames, int[] itemWeights) throws IOException{
 		String currentName;
 		int currentWeight = 100;
 		for(int i=0;i<bagNames.length;i++){
@@ -159,7 +160,7 @@ public class fillBags {
 				break;
 			}
 		}
-		distribute(listOfBags, listOfItems);
+		distribute(listOfBags, listOfItems, 1);
 		
 	}
 	
@@ -248,8 +249,46 @@ public class fillBags {
 		return null; 
 	}
 	
+	public String mutualExclusive(Item item){
+		for (int i=0;i<mutualEx.length;i++){
+			if (mutualEx[i][0] != null && mutualEx[i+1][0] != null){
+				if (mutualEx[i][0].equals(item.itemName)){
+					if (mutualEx[i][1] != null){
+						return mutualEx[i+1][0];
+					}
+					else{
+						return null;
+					}
+				}
+				else{
+					return null;
+				}
+			}
+			else{
+				return null;
+			}
+		}
+		return null;
+	}
 	
-	public void distribute(Bag[] listOfBags, Item[] listOfItems){
+	public void resetBags() throws IOException
+	{
+		for (int i=0;i<listOfBags.length;i++)
+		{
+			if(listOfBags[i] != null){
+				listOfBags[i].weight = listOfBags[i].totalWeight;
+				listOfBags[i].numItems = 0;
+				listOfBags[i].listOfItems = new Item[100];
+			}
+		}
+		for (int j=0;j<listOfItems.length;j++){
+			if (listOfItems[j] != null){
+				listOfItems[j].weight = listOfItems[j].totalWeight;
+			}
+		}
+	}
+	
+	public void distribute(Bag[] listOfBags, Item[] listOfItems, int loop) throws IOException{
 		for (int j=0;j<listOfBags.length;j++) {
 			for (int i=0;i<listOfItems.length;i++) {
 				if (listOfItems[i] != null && listOfBags[j] != null){
@@ -257,13 +296,18 @@ public class fillBags {
 							&& listOfBags[j].numItems < higherLimit) {
 						//Check unary constraints
 						//Unary inclusive
+						System.out.println(listOfItems[i].itemName + " fits in bag " + listOfBags[j].bagName);
 						if (unaryInclusive(listOfItems[i]) != null)
 						{
+							//System.out.println(listOfItems[i].itemName + " has unary inclusive!");
 							if (listOfBags[j].bagName.equals(unaryInclusive(listOfItems[i])))
 							{
+								System.out.println("is it here?");
 								listOfBags[j].addItem(listOfItems[i]);
 								listOfItems[i].weight = 100000;
 							}
+							listOfBags[j].addItem(listOfItems[i]);
+							listOfItems[i].weight = 100000;
 						}
 						//Unary exclusive
 						else if (unaryExclusive(listOfItems[i])[0] != null){
@@ -361,12 +405,14 @@ public class fillBags {
 								}
 							}
 							else{
+								System.out.println("Does it come here?");
 								listOfBags[j].addItem(listOfItems[i]);
 								listOfItems[i].weight = 100000;
 							}
 						}
 						
 						else{
+						System.out.println("DOes it come here?");
 						listOfBags[j].addItem(listOfItems[i]);
 						listOfItems[i].weight = 100000;
 						}
@@ -381,16 +427,47 @@ public class fillBags {
 		for(int l=0;l<listOfItems.length;l++){
 			if (listOfItems[l] != null){
 				if (listOfItems[l].weight < 10000){
+					System.out.println(listOfItems[l].itemName + " " + listOfItems[l].weight);
 					counter++;
+					break;
 				}
 			}
 		}
-		if (counter==0){
-			output(listOfBags, listOfItems);
-		}
-		else{
+		if (counter != 0){
+			if (MAX_LOOPS == 0){
+				System.out.println("IS IT HERE?");
+				resetBags();
+				listOfItems = shiftArray(listOfItems);
+				loop++;
+				distribute(listOfBags, listOfItems, loop);
+			}
 			System.out.println("NO SOLUTION!");
 		}
+		else{
+			output(listOfBags, listOfItems);
+		}
+		
+	}
+	
+	public Item[] shiftArray(Item[] listOfItems){
+		Item[] temp = new Item[100];
+		Item firstItem = listOfItems[0];
+		for (int i=0;i<listOfItems.length-1;i++){
+			if (listOfItems[i+1] != null){
+			temp[i] = listOfItems[i+1];
+			}
+			else{
+				break;
+			}
+		}
+		for (int k=0;k<temp.length;k++){
+			if (temp[k] == null){
+				temp[k] = firstItem;
+				break;
+			}
+		}
+		
+		return temp;
 	}
 	
 	public void output(Bag[] listOfBags, Item[] listOfItems) {
