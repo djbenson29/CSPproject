@@ -396,6 +396,34 @@ public class fillBags {
 							}
 						}
 						
+						else if (binaryNotEqual(listOfItems[i]) != null){
+							String notBinaryPair = binaryNotEqual(listOfItems[i]);
+							System.out.println(notBinaryPair);
+							boolean found = false;
+							for (int r=0;r<listOfBags.length;r++){
+								if (listOfBags[r] != null){
+									if (Arrays.asList(listOfBags[r].listOfItems).contains(notBinaryPair)){
+										System.out.println("Found pair");
+										found = true;
+										break;
+									}
+								}
+							}
+							if (found){
+								if(Arrays.asList(listOfBags[j].listOfItems).contains(notBinaryPair)){
+									System.out.println("I'm here!");
+								}
+								else{
+									listOfBags[j].addItem(listOfItems[i]);
+									listOfItems[i].weight = 100000;
+								}
+							}
+							else{
+								listOfBags[j].addItem(listOfItems[i]);
+								listOfItems[i].weight = 100000;
+							}
+						}
+						
 						else{
 						listOfBags[j].addItem(listOfItems[i]);
 						listOfItems[i].weight = 100000;

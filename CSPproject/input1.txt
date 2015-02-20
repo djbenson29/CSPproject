@@ -9,6 +9,6 @@ q 15
 ##### - unary inclusive
 ##### - unary exclusive
 ##### - binary equals
-C D
 ##### - binary not equals
+D C
 ##### - binary simultaneous
